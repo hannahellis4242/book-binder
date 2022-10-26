@@ -1,0 +1,7 @@
+version: "2"
+services:
+  server:
+    build: ./server
+    domainname: book
+    expose:
+      - "5000"
