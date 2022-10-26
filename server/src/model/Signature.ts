@@ -1,4 +1,4 @@
-class Signature {
+export default class Signature {
   private pageSequence: number[];
   public pages: number;
   public sheets: number;
@@ -27,22 +27,3 @@ class Signature {
     return this.pageSequence;
   }
 }
-
-class Book {
-  public pageNumbers: number[];
-  constructor(private signatures: Signature[]) {
-    this.pageNumbers = [];
-    let runningPageNumbers = 0;
-    this.signatures.forEach((signature) => {
-      const pagesInSignature = signature.pages;
-      const squence = signature.getPageSequence();
-      squence.forEach((pageNumber) => {
-        this.pageNumbers.push(runningPageNumbers + pageNumber);
-      });
-      runningPageNumbers += pagesInSignature;
-    });
-  }
-}
-
-const book = new Book([new Signature(4), new Signature(4)]);
-console.log(book.pageNumbers.map((x) => x + 1));
