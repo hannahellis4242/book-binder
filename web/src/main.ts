@@ -4,14 +4,15 @@ import { join } from "path";
 
 const app = express();
 
-app.use("/", express.static(join(__dirname, "..", "public")));
-
+//set up proxy
 const proxy = createProxyServer();
+app.use("/", (req, res, next) => {
+  proxy.web(req, res, { target: "http://localhost:3000" }, next);
+});
 app.use("/book", (req, res, next) => {
-  console.log("using service");
   proxy.web(req, res, { target: "http://localhost:5000" }, next);
 });
 
-app.listen(3000, "0.0.0.0", () => {
+app.listen(8080, "0.0.0.0", () => {
   console.log("web server started");
 });
