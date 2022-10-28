@@ -14,10 +14,16 @@ const Creator = () => {
   };
   const calculate: MouseEventHandler = async (e) => {
     e.preventDefault();
-    const response = await axios.post("http://server:5000/services", {
-      signitures: signitures.join(","),
-    });
-    console.log(response);
+    axios
+      .post("http::/localhost:3000/book", {
+        signitures: signitures.join(","),
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log("error : ", err);
+      });
   };
   return (
     <section>
