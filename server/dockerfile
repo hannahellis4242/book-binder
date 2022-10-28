@@ -1,10 +1,10 @@
 FROM node:current-alpine
 
-COPY src ./src
 COPY package.json .
-COPY tsconfig.json .
-
 RUN npm i
+
+COPY tsconfig.json .
+COPY src ./src
 RUN npx tsc
 
 CMD node dist/main.js
