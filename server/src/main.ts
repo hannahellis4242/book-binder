@@ -31,6 +31,6 @@ app.get("/", (req, res) => {
   }
 });
 
-const host: string = "localhost";
+const host: string = "0.0.0.0";
 const port: number = 5000;
 app.listen(port, host, () => console.log(`listening on ${host}:${port}`));
