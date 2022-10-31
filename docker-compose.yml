@@ -1,9 +1,21 @@
 version: "2"
 services:
-  server:
+  book:
     build: ./server
-    domainname: book
     expose:
-      - "5000"
+      - 5000
+  web:
+    build: ./web
+    environment:
+      - book-host=book
+      - book-port=5000
+      - client-host=client
+      - client-port=3000
+    expose:
+      - 8080
     ports:
-      - "5000:5000"
+      - 80:8080
+  client:
+    build: ./client
+    expose:
+      - 3000

@@ -2,7 +2,7 @@ import { MouseEventHandler, useRef, useState } from "react";
 import axios from "axios";
 
 const Creator = () => {
-  const [signitures, setSignatures] = useState<number[]>([]);
+  const [signatures, setSignatures] = useState<number[]>([]);
   const [result, setResult] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const addSignature: MouseEventHandler = (e) => {
@@ -15,15 +15,21 @@ const Creator = () => {
   const calculate: MouseEventHandler = async (e) => {
     e.preventDefault();
     axios
-      .post("http::/localhost:3000/book", {
-        signitures: signitures.join(","),
+      .post(`http://${location.host}/book`, {
+        signatures,
       })
-      .then((data) => {
-        console.log(data);
+      .then((res) => {
+        const { key } = res.data;
+        console.log(key);
+        axios
+          .get(`/book?key=${key}`)
+          .then((res) => {
+            setResult((_) => res.data.pages.join(","));
+            console.log(res);
+          })
+          .catch((err) => console.log("error getting : ", err));
       })
-      .catch((err) => {
-        console.log("error : ", err);
-      });
+      .catch((err) => console.log("error : ", err));
   };
   return (
     <section>
@@ -37,11 +43,15 @@ const Creator = () => {
       ></input>
       <button onClick={addSignature}>add</button>
       <ul>
-        {signitures.map((s, i) => (
+        {signatures.map((s, i) => (
           <li key={i}>{s}</li>
         ))}
       </ul>
       <button onClick={calculate}>calculate</button>
+      <section>
+        <header>result</header>
+        <p>{result}</p>
+      </section>
     </section>
   );
 };

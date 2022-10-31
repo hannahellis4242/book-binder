@@ -6,11 +6,16 @@ app.use(json());
 const library = new Library();
 
 app.post("/", async (req, res) => {
+  console.log("post:", req.body);
   const { signatures } = req.body;
   if (signatures) {
+    console.log("processing");
     const values: number[] = signatures;
+    console.log("values: ", values);
     const signaturesStr = values.map((x) => x.toString()).join("-");
+    console.log("signature string : ", signaturesStr);
     const key = await library.register(signaturesStr);
+    console.log("sendng key");
     res.json({ key });
   } else {
     res.sendStatus(400);
@@ -18,7 +23,9 @@ app.post("/", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
+  console.log("get", req.query);
   const { key } = req.query;
+  console.log("key: ", key);
   if (key) {
     const book = library.book(key as string);
     if (book) {
