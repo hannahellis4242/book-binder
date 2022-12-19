@@ -1,9 +1,12 @@
 import express, { json } from "express";
 import Library from "./model/Library";
+import pages from "./routes/pages";
 
 const app = express();
 app.use(json());
 const library = new Library();
+
+app.use("/pages", pages);
 
 app.post("/", async (req, res) => {
   console.log("post:", req.body);

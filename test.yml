@@ -1,0 +1,20 @@
+version: "2"
+services:
+  page_sequence:
+    build: ./page_sequence
+    environment:
+      - DB_HOST=db
+    expose:
+      - 5000
+    ports:
+      - 5000:5000
+  db:
+    image: mongo
+    expose:
+      - 27017
+    ports:
+      - 27017:27017
+    volumes:
+      - db:/data/db
+volumes:
+  db:

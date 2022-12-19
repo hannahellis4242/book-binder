@@ -15,3 +15,6 @@ export default class Book {
     });
   }
 }
+
+export const createBookForSignaturesArray = (arr: number[]) =>
+  new Book(arr.map((sheets) => new Signature(sheets)));
