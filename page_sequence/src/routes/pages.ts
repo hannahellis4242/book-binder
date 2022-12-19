@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { MongoClient, ObjectId } from "mongodb";
-import { createBookForSignaturesArray } from "../model/Book";
-import Signature from "../model/Signature";
+import { createPageSequence } from "../solver/createPageSequence";
 
 // Connection URL
 const db_host = process.env.DB_HOST || "localhost";
@@ -87,7 +86,7 @@ const updateSignaturesWithSquence = async (
   client.close();
 };
 
-const solve = async (signatures: number[]): Promise<ObjectId> => {
+const pageSequence = async (signatures: number[]): Promise<ObjectId> => {
   const signaturesID = await findOrAddSignatures(signatures);
   findSignatureById(signaturesID).then(async (signature) => {
     if (!signature) {
@@ -95,9 +94,7 @@ const solve = async (signatures: number[]): Promise<ObjectId> => {
       return undefined;
     }
     if (!signature.sequenceID) {
-      const sequence = createBookForSignaturesArray(signatures).pageNumbers.map(
-        (page) => page + 1
-      );
+      const sequence = createPageSequence(signatures).map((page) => page + 1);
       const sequenceID = await addSquence(signaturesID, sequence);
       updateSignaturesWithSquence(signaturesID, sequenceID);
     }
@@ -115,7 +112,7 @@ pages.post("/", async (req, res) => {
       .json({ usage: { url: "/pages", body: "{signatures:number[]}" } });
     return;
   }
-  const id = await solve(signatures);
+  const id = await pageSequence(signatures);
   res.json({ signaturesID: id });
 });
 
