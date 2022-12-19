@@ -20,12 +20,10 @@ const Creator = () => {
       })
       .then((res) => {
         const { signaturesID } = res.data;
-        console.log(`id:${signaturesID}`);
         axios
           .get(`/book?id=${signaturesID}`)
           .then((res) => {
             setResult((_) => res.data.sequence.join(","));
-            console.log(res);
           })
           .catch((err) => console.log("error getting : ", err));
       })
