@@ -4,7 +4,7 @@ import pages from "./routes/pages";
 const app = express();
 app.use(json());
 
-app.use("/pages", pages);
+app.use("/", pages);
 
 const host: string = "0.0.0.0";
 const port: number = 5000;

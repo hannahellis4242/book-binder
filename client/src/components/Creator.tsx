@@ -19,12 +19,12 @@ const Creator = () => {
         signatures,
       })
       .then((res) => {
-        const { key } = res.data;
-        console.log(key);
+        const { signaturesID } = res.data;
+        console.log(`id:${signaturesID}`);
         axios
-          .get(`/book?key=${key}`)
+          .get(`/book?id=${signaturesID}`)
           .then((res) => {
-            setResult((_) => res.data.pages.join(","));
+            setResult((_) => res.data.sequence.join(","));
             console.log(res);
           })
           .catch((err) => console.log("error getting : ", err));

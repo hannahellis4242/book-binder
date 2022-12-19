@@ -109,7 +109,7 @@ pages.post("/", async (req, res) => {
   if (!signatures) {
     res
       .status(400)
-      .json({ usage: { url: "/pages", body: "{signatures:number[]}" } });
+      .json({ usage: { url: "/", body: "{signatures:number[]}" } });
     return;
   }
   const id = await pageSequence(signatures);
@@ -119,9 +119,7 @@ pages.post("/", async (req, res) => {
 pages.get("/signatures", (req, res) => {
   const { id } = req.query;
   if (!id) {
-    res
-      .status(400)
-      .json({ usage: { url: "/pages/signatures?id=<signaturesID>" } });
+    res.status(400).json({ usage: { url: "/signatures?id=<signaturesID>" } });
     return;
   }
   const value = findSignatureById(new ObjectId(id as string));
@@ -135,9 +133,7 @@ pages.get("/signatures", (req, res) => {
 pages.get("/sequence", (req, res) => {
   const { id } = req.query;
   if (!id) {
-    res
-      .status(400)
-      .json({ usage: { url: "/pages/squence?id=<signaturesID>" } });
+    res.status(400).json({ usage: { url: "/squence?id=<signaturesID>" } });
     return;
   }
   const value = findSquenceById(new ObjectId(id as string));
@@ -146,6 +142,30 @@ pages.get("/sequence", (req, res) => {
     return;
   }
   res.json(value);
+});
+
+pages.get("/", async (req, res) => {
+  const { id } = req.query;
+  if (!id) {
+    res.status(400).json({ usage: { url: "/?id=<signatureID>" } });
+    return;
+  }
+  const signature = await findSignatureById(new ObjectId(id as string));
+  if (!signature) {
+    res.sendStatus(404);
+    return;
+  }
+  const { sequenceID } = signature;
+  if (!sequenceID) {
+    res.json({ status: "processing" });
+    return;
+  }
+  const sequence = await findSquenceById(sequenceID);
+  if (!sequence) {
+    res.json({ status: "processing" });
+    return;
+  }
+  res.json({ sequence: sequence.sequence });
 });
 
 export default pages;
