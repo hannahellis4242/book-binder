@@ -1,13 +1,17 @@
 version: "2"
 services:
-  book:
-    build: ./server
+  page_sequence:
+    build: ./page_sequence
+    environment:
+      - DB_HOST=db
     expose:
       - 5000
+    ports:
+      - 5000:5000
   web:
     build: ./web
     environment:
-      - book-host=book
+      - book-host=page_sequence
       - book-port=5000
       - client-host=client
       - client-port=3000
@@ -19,3 +23,13 @@ services:
     build: ./client
     expose:
       - 3000
+  db:
+    image: mongo
+    expose:
+      - 27017
+    ports:
+      - 27017:27017
+    volumes:
+      - db:/data/db
+volumes:
+  db:
