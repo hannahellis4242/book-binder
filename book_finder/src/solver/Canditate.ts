@@ -1,2 +1,2 @@
-type Candidate = [number, number][];
+type Candidate = number[];
 export default Candidate;

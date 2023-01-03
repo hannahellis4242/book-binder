@@ -1,4 +1,6 @@
+import NumberRange from "./NumberRange";
+
 export default interface Problem {
-  range: { min: number; max: number };
+  range: NumberRange;
   allowed: number[];
 }

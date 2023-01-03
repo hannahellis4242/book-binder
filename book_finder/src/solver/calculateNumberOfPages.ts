@@ -1,6 +1,7 @@
 import Candidate from "./Canditate";
 
-const calculateNumberOfPages = (candidate: Candidate): number =>
-  candidate.reduce((total, [pages, number]) => total + 4 * pages * number, 0);
+const calculateNumberOfPages = (xs: [number, number][]): number =>
+  4 *
+  xs.map(([pages, number]) => pages * number).reduce((acc, x) => acc + x, 0);
 
 export default calculateNumberOfPages;
