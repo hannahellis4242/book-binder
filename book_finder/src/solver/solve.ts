@@ -1,116 +1,45 @@
-import calculateNumberOfPages from "./calculateNumberOfPages";
-import Candidate from "./Canditate";
-import convertCandidateToSignatures from "./convertCanditateToSignatures";
-import Problem from "./Problem";
-import Signatures from "./Signatures";
-import byNumberOfPages from "./byNumberOfPages";
 import uniq from "../utils/uniq";
+import cartesianProduct from "../utils/cartesianProduct";
 import zip from "../utils/zip";
-import grow from "./grow";
-import allOf from "../utils/allOf";
-import NumberRange from "./NumberRange";
-import { volume } from "./maxiums";
+import Book from "./Book";
 
-/*const DEBUG_ON = true;
-const debug = DEBUG_ON
-  ? <T>(
-      name: string,
-      fn: (problem: Problem, candidate: Candidate) => T,
-      problem: Problem,
-      candidate: Candidate
-    ) => {
-      const result = fn(problem, candidate);
-      console.log(`---------${name}---------\n
-  input:\n\tproblem: ${JSON.stringify(
-    problem,
-    null,
-    2
-  )}\n\tcandidate: ${JSON.stringify(candidate, null, 2)}\n
-  return: ${result}\n
-  =========${name}=========`);
-      return result;
-    }
-  : <T>(
-      _: string,
-      fn: (problem: Problem, candidate: Candidate) => T,
-      problem: Problem,
-      candidate: Candidate
-    ) => fn(problem, candidate);
-    */
-const root = (p: Problem): [Candidate] => [
-  p.allowed.map((a) => Math.floor(p.range.min / (4 * a))),
-];
+const getMaximums = (allowed: number[], maxPages: number) =>
+  allowed.map((a) => Math.ceil(maxPages / (4 * a)));
 
-const allValuesPositive = (p: number[]) => allOf((x) => x >= 0, p);
+const range = (n: number) =>
+  Array(n)
+    .fill(0)
+    .map((_, i) => i);
 
-const accept =
-  ({ allowed, range }: Problem) =>
-  (c: Candidate) =>
-    allValuesPositive(c) &&
-    range.contains(calculateNumberOfPages(zip(allowed, c)));
+const numberOfPages = (allowed: number[], point: number[]): number =>
+  4 *
+  zip(allowed, point)
+    .map(([x, y]) => x * y)
+    .reduce((acc, x) => acc + x, 0);
 
-type Point = number[];
-
-const search =
-  (saftey: number) =>
-  (accept: (c: Candidate) => boolean) =>
-  (points: Point[]): number[] => {
-    console.log("--------------search--------------");
-    console.log("saftey :", saftey);
-    console.log("trail points : (", points.length, ")", JSON.stringify(points));
-
-    const allowed = points.find(accept);
-    if (allowed) {
-      console.log("found a point :", allowed);
-      console.log("==============search==============");
-      return allowed;
-    }
-    if (saftey < 0) {
-      console.log("hit saftey valve");
-      console.log("==============search==============");
-      return [];
-    }
-    console.log("No point found yet, growing trail points");
-    console.log("==============search==============");
-    return search(saftey - 1)(accept)(
-      uniq(points.flatMap(grow).sort(), pointEquality)
-    );
+const isSolution =
+  (target: number, max: number, allowed: number[]) =>
+  (point: number[]): boolean => {
+    const pages = numberOfPages(allowed, point);
+    return pages >= target && pages <= max;
   };
 
-const pointEquality = (a: Point, b: Point) => {
-  return allOf(([a, b]) => a === b, zip(a, b));
-};
+const byNumberOfPages = (a: Book, b: Book) => a.getPages() - b.getPages();
 
-const fill = (condition: (p: Point) => boolean, points: Point[]): Point[] => {
-  const possible = uniq(
-    points.flatMap(grow).flatMap(grow).concat(points),
-    pointEquality
-  ).filter(condition);
-  if (possible.length === points.length) {
-    return points;
-  }
-  return fill(condition, possible);
-};
-
-const allPoints = ({ allowed }: Problem, max: number) => {};
 const solve = (
   target: number,
   max: number,
   allowedPagesPerSignature: number[]
-): Signatures[] => {
-  //make sure allowed is sorted and unique
+): Book[] => {
+  if (target > max) {
+    return [];
+  }
   const allowed = uniq(allowedPagesPerSignature.sort());
-  //precalculate the allowed range
-  const range = new NumberRange(target, max);
-  const problem: Problem = { range, allowed };
-  const acceptFn = accept(problem);
-  const start = search(Math.ceil(volume(problem, max) / 2))(acceptFn)(
-    root(problem)
-  );
-  const solutions = fill(acceptFn, [start]);
-  return solutions
-    .sort(byNumberOfPages(problem))
-    .map((candidate) => convertCandidateToSignatures(problem, candidate));
+  console.log("allowed", allowed);
+  return cartesianProduct(getMaximums(allowed, max).map((n) => range(n)))
+    .filter(isSolution(target, max, allowed))
+    .map((solution) => new Book(allowed, solution))
+    .sort(byNumberOfPages);
 };
 
 export default solve;
