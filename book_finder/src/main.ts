@@ -1,6 +1,5 @@
 import express, { json } from "express";
 import solveRoute from "./routes/solveRoute";
-import solve from "./solver/solve";
 
 const app = express();
 app.use(json());
