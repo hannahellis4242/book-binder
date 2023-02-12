@@ -4,12 +4,12 @@ import Signatures from "../model/Signatures";
 
 const db_host = process.env.DB_HOST || "localhost";
 const url = `mongodb://${db_host}:27017`;
-const client = new MongoClient(url);
 
 const dbName = "book";
 const booksCollection = "books";
 
 export const addBook = async (book: Book): Promise<ObjectId> => {
+  const client = new MongoClient(url);
   await client.connect();
   const db = client.db(dbName);
   const collection = db.collection<Book>(booksCollection);
@@ -19,6 +19,7 @@ export const addBook = async (book: Book): Promise<ObjectId> => {
 };
 
 export const findBookByID = async (id: ObjectId) => {
+  const client = new MongoClient(url);
   await client.connect();
   const db = client.db(dbName);
   const collection = db.collection<Book>(booksCollection);
@@ -28,18 +29,17 @@ export const findBookByID = async (id: ObjectId) => {
 };
 
 export const findBookBySignatures = async (signatures: Signatures) => {
+  const client = new MongoClient(url);
   await client.connect();
   const db = client.db(dbName);
   const collection = db.collection<Book>(booksCollection);
-  console.log("got collection");
   const result = await collection.findOne({ signatures });
-  console.log("got result");
   client.close();
-  console.log("returing ", result);
   return result;
 };
 
 export const findBookByPagesExact = async (pages: number) => {
+  const client = new MongoClient(url);
   await client.connect();
   const db = client.db(dbName);
   const collection = db.collection<Book>(booksCollection);
@@ -59,7 +59,7 @@ export const findBookByPages = async (min?: number, max?: number) => {
   if (max) {
     search = { ...search, $lte: max };
   }
-  console.log("search :", search);
+  const client = new MongoClient(url);
   await client.connect();
   const db = client.db(dbName);
   const collection = db.collection<Book>(booksCollection);

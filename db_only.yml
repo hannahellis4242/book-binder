@@ -1,14 +1,5 @@
 version: "2"
 services:
-  book:
-    build: ./book
-    environment:
-      - DB_HOST=db
-    expose:
-      - 5000
-    ports:
-      - 5000:5000
-    restart: always
   db:
     image: mongo
     expose:

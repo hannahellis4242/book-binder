@@ -1,0 +1,14 @@
+import { Collection, MongoClient, WithId } from "mongodb";
+import databaseOperation from "./databaseOperation";
+import { createSignatures } from "../model/Signatures";
+
+const findOrCreateBook =
+  (client: MongoClient) =>
+  (dbName: string) =>
+  (collectionName: string) =>
+  (signatureSizes: number[], counts: number[]) => {
+    const signatures = createSignatures(signatureSizes, counts);
+    databaseOperation(client)(dbName)(collectionName)((x) => {
+      return x.findOne({ signatures });
+    });
+  };

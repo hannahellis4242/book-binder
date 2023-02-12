@@ -1,6 +1,6 @@
-import { Router } from "express";
+/*import { Router } from "express";
 import { MongoClient, ObjectId } from "mongodb";
-import Book from "../solver/Book";
+import Book from "../model/Book";
 import solve from "../solver/solve";
 
 const db_host = process.env.DB_HOST || "localhost";
@@ -13,6 +13,7 @@ const booksCollection = "books";
 
 interface Problem {
   target: number;
+  max:number;
   allowedSheetsPerSignature: number[];
   solution?: ObjectId;
 }
@@ -108,3 +109,4 @@ solveRoute.post("/", async (req, res) => {
 });
 
 export default solveRoute;
+*/

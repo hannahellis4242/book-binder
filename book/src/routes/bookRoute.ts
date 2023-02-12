@@ -15,7 +15,14 @@ const bookRoute = Router();
 
 bookRoute.post("/", async (req, res) => {
   const { signatures } = req.body;
-  if (!signatures) {
+  console.log("signatures :", signatures);
+  const keyCount = signatures
+    ? Object.keys(signatures)
+        .map((_) => 1)
+        .reduce((x, y) => x + y, 0)
+    : 0;
+  if (keyCount === 0) {
+    console.log("bad reqest");
     res.status(StatusCodes.BAD_REQUEST).json({
       usage: {
         url: "http://book/",
@@ -24,19 +31,25 @@ bookRoute.post("/", async (req, res) => {
     });
     return;
   }
+  console.log("finding");
   const existing = await findBookBySignatures(signatures);
+  console.log("existing :", existing);
   if (existing) {
     const { _id } = existing;
-    res.status(StatusCodes.NOT_MODIFIED).send(_id);
+    res.status(StatusCodes.OK).send(_id);
     return;
   }
+  console.log("creating ");
   const book = new Book(signatures);
+  console.log("book :", book);
   const bookId = await addBook(book);
+  console.log("added");
   if (!bookId) {
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
     return;
   }
   res.status(StatusCodes.CREATED).send(bookId);
+  console.log("done");
 });
 
 bookRoute.get("/id/:id", async (req, res) => {
@@ -48,15 +61,12 @@ bookRoute.get("/id/:id", async (req, res) => {
 bookRoute.get("/signatures/:signatures", async (req, res) => {
   try {
     const signatures = JSON.parse(req.params.signatures) as Signatures;
-    console.log("signatures:", signatures);
     const result = await findBookBySignatures(signatures);
     if (!result) {
       res.sendStatus(StatusCodes.NOT_FOUND);
       return;
     }
-    console.log("sending");
     res.json(result);
-    console.log("sent");
   } catch (e) {
     console.error(e);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e);
