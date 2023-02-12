@@ -5,6 +5,7 @@ import Book from "../model/Book";
 import {
   addBook,
   findBookByID,
+  findBookByPages,
   findBookByPagesExact,
   findBookBySignatures,
 } from "../database/books";
@@ -62,13 +63,45 @@ bookRoute.get("/signatures/:signatures", async (req, res) => {
   }
 });
 
-bookRoute.get("/pages/:pages", async (req, res) => {
-  const { pages } = req.params;
-  console.log("pages:", pages);
+bookRoute.get("/pages", async (req, res) => {
+  const { equal, min, max } = req.query;
+  const equalValue = Number(equal);
+  const minValue = Number(min);
+  const maxValue = Number(max);
+  if (isNaN(equalValue) && isNaN(minValue) && isNaN(maxValue)) {
+    res.status(StatusCodes.BAD_REQUEST).json({
+      usage: [
+        {
+          url: "http://book/pages?equal:<number>",
+        },
+        {
+          url: "http://book/pages?min:<number>",
+        },
+        {
+          url: "http://book/pages?max:<number>",
+        },
+        {
+          url: "http://book/pages?min:<number>,max:<number>",
+        },
+      ],
+    });
+    return;
+  }
+  const results = !isNaN(equalValue)
+    ? await findBookByPages(equalValue, equalValue)
+    : await findBookByPages(minValue, maxValue);
+  if (results.length === 0) {
+    res.sendStatus(StatusCodes.NOT_FOUND);
+    return;
+  }
+  res.json(results);
+});
+/*
+bookRoute.get("/pages", async (req, res) => {
+  const { min } = req.params;
   try {
-    const n = Number(pages);
-    console.log("n:", n);
-    const results = await findBookByPagesExact(n);
+    const n = Number(min);
+    const results = await findBookByPages(n, n);
     if (results.length === 0) {
       res.status(StatusCodes.NOT_FOUND);
       return;
@@ -82,6 +115,6 @@ bookRoute.get("/pages/:pages", async (req, res) => {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(e);
     }
   }
-});
+});*/
 
 export default bookRoute;

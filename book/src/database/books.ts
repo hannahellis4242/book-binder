@@ -47,3 +47,23 @@ export const findBookByPagesExact = async (pages: number) => {
   client.close();
   return results;
 };
+
+export const findBookByPages = async (min?: number, max?: number) => {
+  if (!min && !max) {
+    return [];
+  }
+  let search = {};
+  if (min) {
+    search = { ...search, $gte: min };
+  }
+  if (max) {
+    search = { ...search, $lte: max };
+  }
+  console.log("search :", search);
+  await client.connect();
+  const db = client.db(dbName);
+  const collection = db.collection<Book>(booksCollection);
+  const results = await collection.find({ pages: search }).toArray();
+  client.close();
+  return results;
+};
