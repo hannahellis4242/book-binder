@@ -38,16 +38,6 @@ export const findBookBySignatures = async (signatures: Signatures) => {
   return result;
 };
 
-export const findBookByPagesExact = async (pages: number) => {
-  const client = new MongoClient(url);
-  await client.connect();
-  const db = client.db(dbName);
-  const collection = db.collection<Book>(booksCollection);
-  const results = await collection.find({ pages }).toArray();
-  client.close();
-  return results;
-};
-
 export const findBookByPages = async (min?: number, max?: number) => {
   if (!min && !max) {
     return [];
