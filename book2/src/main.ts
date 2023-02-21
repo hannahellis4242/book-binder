@@ -12,9 +12,19 @@ const outgoing =
   new Service("localhost", 6001);
 
 const start = async () => {
+  let count = 1000;
   for (;;) {
+    if (count === 0) {
+      count = 1000;
+      console.log("polling", incoming.url(), "...");
+    }
+    count--;
     await axios
       .get(incoming.url())
+      .then((message) => {
+        console.log(message);
+        return message;
+      })
       .then(handleMessage(outgoing))
       .catch(() => {});
   }
