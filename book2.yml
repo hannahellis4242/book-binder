@@ -1,6 +1,6 @@
 version: "2"
 services:
-  queue-in:
+  queuein:
     build: ./simple_queue
     ports:
       - 6001:6000
@@ -11,10 +11,10 @@ services:
     build: ./book2
     environment:
       - DB_HOST=db
-      - IN_QUEUE_HOST=queue-in
-      - IN_QUEUE_PORT=6001
-      - OUT_QUEUE_HOST=queue-out
-      - OUT_QUEUE_PORT=6002
+      - IN_QUEUE_HOST=queuein
+      - IN_QUEUE_PORT=6000
+      - OUT_QUEUE_HOST=queueout
+      - OUT_QUEUE_PORT=6000
     expose:
       - 5000
     ports:
@@ -28,7 +28,7 @@ services:
       - 27017:27017
     volumes:
       - db:/data/db
-  queue-out:
+  queueout:
     build: ./simple_queue
     ports:
       - 6002:6000

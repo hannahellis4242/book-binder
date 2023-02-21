@@ -11,20 +11,27 @@ const outgoing =
   getServiceFromEnv("OUT_QUEUE_HOST", "OUT_QUEUE_PORT") ||
   new Service("localhost", 6001);
 
+console.log(JSON.stringify({ "start up info": { incoming, outgoing } }));
+
+const healthCheck = async () => {
+  const url = `${incoming.url()}/status`;
+  console.log(`checking connection to ${url}`);
+  return axios
+    .get(url)
+    .then(() => true)
+    .catch(() => false);
+};
+
 const start = async () => {
-  let count = 1000;
+  const check = await healthCheck();
+  if (!check) {
+    console.log("could not connect to input queue");
+    process.exit(1);
+  }
   for (;;) {
-    if (count === 0) {
-      count = 1000;
-      console.log("polling", incoming.url(), "...");
-    }
-    count--;
     await axios
       .get(incoming.url())
-      .then((message) => {
-        console.log(message);
-        return message;
-      })
+      .then(({ data }) => data)
       .then(handleMessage(outgoing))
       .catch(() => {});
   }
