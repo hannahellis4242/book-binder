@@ -35,4 +35,8 @@ app.get("/", (_, res) => {
   res.json(message);
 });
 
+app.get("/status", (_, res) => {
+  res.json({ length: queue.length, messages: queue });
+});
+
 app.listen(port, host, () => console.log(`listening on ${host}:${port}`));
