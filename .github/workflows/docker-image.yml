@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build ./simple_queue --file Dockerfile --tag simple_queue:$(date +%s)
+      run: docker build . --file simple_queue/dockerfile --tag simple_queue:$(date +%s)
