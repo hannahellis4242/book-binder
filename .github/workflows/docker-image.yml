@@ -7,11 +7,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
 
@@ -22,7 +19,15 @@ jobs:
         username: ${{github.actor}}
         password: ${{secrets.GITHUB_TOKEN}}
 
-    - name: Push Image
+    - name: Build And Push simple_queue Image
       run: |
-        docker build ./simple_queue --file simple_queue/dockerfile --tag ghcr.io/hannahellis4242/simple_queue:latest
-        docker push ghcr.io/hannahellis4242/simple_queue:latest
+        docker build ./simple_queue --file simple_queue/dockerfile --tag ghcr.io/hannahellis4242/book-binder/simple_queue:latest
+        docker push ghcr.io/hannahellis4242/book-binder/simple_queue:latest
+    - name: Build And Push page_sequence Image
+      run: |
+        docker build ./page_sequence --file page_sequence/dockerfile --tag ghcr.io/hannahellis4242/book-binder/page_sequence:latest
+        docker push ghcr.io/hannahellis4242/book-binder/page_sequence:latest
+    - name: Build And Push web Image
+      run: |
+        docker build ./web --file web/dockerfile --tag ghcr.io/hannahellis4242/book-binder/web:latest
+        docker push ghcr.io/hannahellis4242/book-binder/web:latest
