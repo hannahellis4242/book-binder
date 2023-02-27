@@ -3,7 +3,7 @@ name: Docker Image CI - simple_queue
 on:
   push:
     paths:
-      - "simple_queue"
+      - "simple_queue/*"
 
 jobs:
   build:
