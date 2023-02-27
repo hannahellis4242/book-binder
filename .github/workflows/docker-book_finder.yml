@@ -1,9 +1,9 @@
-name: Docker Image CI - page-squence
+name: Docker Image CI - book_finder
 
 on:
   push:
     paths:
-      - "page-squence/**"
+      - "book_finder/**"
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Build And Push page-squence Image
+      - name: Build And Push book_finder Image
         run: |
-          docker build ./page-squence --file page-squence/dockerfile --tag ghcr.io/hannahellis4242/book-binder/page-squence:latest
-          docker push ghcr.io/hannahellis4242/book-binder/page-squence:latest
+          docker build ./book_finder --file book_finder/dockerfile --tag ghcr.io/hannahellis4242/book-binder/book_finder:latest
+          docker push ghcr.io/hannahellis4242/book-binder/book_finder:latest
