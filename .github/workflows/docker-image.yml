@@ -14,8 +14,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build ./simple_queue --file simple_queue/dockerfile --tag simple_queue:$(date +%s)
-    - name: 'Login to GitHub Container Registry'
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Push Image
       run: |
-        echo $CR_PAT | docker login ghcr.io -u hannahellis4242 --password-stdin
+        docker build ./simple_queue --file simple_queue/dockerfile --tag ghcr.io/hannahellis4242/simple_queue:latest
+        docker push ghcr.io/hannahellis4242/simple_queue:latest
