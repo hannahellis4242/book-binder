@@ -1,0 +1,24 @@
+name: Docker Image CI - book2
+
+on:
+  push:
+    paths:
+      - "book2/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Build And Push book2 Image
+        run: |
+          docker build ./book2 --file book2/dockerfile --tag ghcr.io/hannahellis4242/book-binder/book2:latest
+          docker push ghcr.io/hannahellis4242/book-binder/book2:latest

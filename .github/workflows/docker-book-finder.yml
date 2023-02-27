@@ -1,0 +1,24 @@
+name: Docker Image CI - book-finder
+
+on:
+  push:
+    paths:
+      - "book-finder/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Build And Push book-finder Image
+        run: |
+          docker build ./book-finder --file book-finder/dockerfile --tag ghcr.io/hannahellis4242/book-binder/book-finder:latest
+          docker push ghcr.io/hannahellis4242/book-binder/book-finder:latest
