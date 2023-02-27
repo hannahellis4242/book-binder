@@ -16,3 +16,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build ./simple_queue --file simple_queue/dockerfile --tag simple_queue:$(date +%s)
+    - name: 'Login to GitHub Container Registry'
+      run: |
+        echo $CR_PAT | docker login ghcr.io -u hannahellis4242 --password-stdin
