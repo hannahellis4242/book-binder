@@ -1,4 +1,4 @@
-name: Docker Image CI - book
+name: book service CI
 
 on:
   push:
@@ -9,15 +9,32 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
+    - run: npm install
+    - run: npm run build
+    
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
-
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm test
+      
+  container:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
-
       - name: Build And Push book Image
         run: |
           docker build ./book --file book/dockerfile --tag ghcr.io/hannahellis4242/book-binder/book:latest
