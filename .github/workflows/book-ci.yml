@@ -29,7 +29,9 @@ jobs:
           node-version: 16
       - name : test
         working-directory: ./book
-        run: npm test
+        run: | 
+          npm install
+          npm test
       
   container:
     needs: test
