@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - run: cd book
     - run: npm install
     - run: npm run build
     
@@ -23,6 +24,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - run: cd book
       - run: npm ci
       - run: npm test
       
