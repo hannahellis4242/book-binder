@@ -12,9 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - run: cd book
-    - run: npm install
-    - run: npm run build
+    - name: install
+      working-directory: ./book
+      run: npm install
+    - name: build
+      working-directory: ./book
+      run: npm run build
     
   test:
     needs: build
@@ -24,9 +27,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: cd book
-      - run: npm ci
-      - run: npm test
+      - name : test
+        working-directory: ./book
+        run: npm test
       
   container:
     needs: test
