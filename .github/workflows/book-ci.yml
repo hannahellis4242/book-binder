@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - "book/**"
+  pull_request:
+    branches: ["main"]
 
 jobs:
   build:
