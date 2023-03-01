@@ -1,9 +1,9 @@
-name: Docker Image CI - book_finder
+name: Docker Image CI - book
 
 on:
   push:
     paths:
-      - "book_finder/**"
+      - "book/**"
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Build And Push book_finder Image
+      - name: Build And Push book Image
         run: |
-          docker build ./book_finder --file book_finder/dockerfile --tag ghcr.io/hannahellis4242/book-binder/book_finder:latest
-          docker push ghcr.io/hannahellis4242/book-binder/book_finder:latest
+          docker build ./book --file book/dockerfile --tag ghcr.io/hannahellis4242/book-binder/book:latest
+          docker push ghcr.io/hannahellis4242/book-binder/book:latest

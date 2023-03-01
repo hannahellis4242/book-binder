@@ -1,9 +1,9 @@
-name: book service CI
+name: book-finder service CI
 
 on:
   push:
     paths:
-      - "book/**"
+      - "book_finder/**"
   pull_request:
     branches: ["main"]
 
@@ -11,14 +11,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: install
-      working-directory: ./book
-      run: npm install
-    - name: build
-      working-directory: ./book
-      run: npm run build
-    
+      - uses: actions/checkout@v3
+      - name: install
+        working-directory: ./book_finder
+        run: npm install
+      - name: build
+        working-directory: ./book_finder
+        run: npm run build
+
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -27,12 +27,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name : test
-        working-directory: ./book
-        run: | 
+      - name: test
+        working-directory: ./book_finder
+        run: |
           npm install
           npm test
-      
+
   container:
     needs: test
     runs-on: ubuntu-latest
@@ -45,6 +45,7 @@ jobs:
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
       - name: Build And Push book Image
+        working-directory: ./book_finder
         run: |
-          docker build ./book --file book/dockerfile --tag ghcr.io/hannahellis4242/book-binder/book:latest
-          docker push ghcr.io/hannahellis4242/book-binder/book:latest
+          docker build . --tag ghcr.io/hannahellis4242/book-binder/book_finder:latest
+          docker push ghcr.io/hannahellis4242/book-binder/book_finder:latest
