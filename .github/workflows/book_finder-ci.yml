@@ -18,20 +18,27 @@ jobs:
       - name: build
         working-directory: ./book_finder
         run: npm run build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: book-finder-artifact
+          path: .
 
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: book-finder-artifact
       - uses: actions/setup-node@v3
         with:
           node-version: 16
       - name: test
         working-directory: ./book_finder
-        run: |
-          npm install
-          npm test
+        run: npm test
 
   container:
     needs: test
