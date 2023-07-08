@@ -3,5 +3,22 @@
   <%- include('head') %>
   <body>
     <%- include('titleAndNav') %>
+    <section>
+      <p>
+        This calculator produces the page sequence for a book made out of a list
+        of signatures with the stated number of sheets.
+      </p>
+      <p>For example a book made of the following list of signatures</p>
+      <p>5,5,4</p>
+      <p>
+        would be a book with a five sheet signature followed by another 5 sheet
+        signature and finally a four sheet signature
+      </p>
+      <form method="post" action="/page/submit">
+        <label for="signatures">signature list:</label>
+        <input type="signatures" name="signatures" required />
+        <button type="submit">Submit</button>
+      </form>
+    </section>
   </body>
 </html>

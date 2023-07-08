@@ -1,35 +1,16 @@
-version: "2"
+version: "3"
 services:
   page_sequence:
-    build: ./page_sequence
-    environment:
-      - DB_HOST=db
+    image: ghcr.io/hannahellis4242/bpss/book-page-sequence-service:latest
     expose:
-      - 5000
+      - 3001
     ports:
-      - 5000:5000
+      - 3001:8080
+    restart: always
   web:
-    build: ./web
-    environment:
-      - book-host=page_sequence
-      - book-port=5000
-      - client-host=client
-      - client-port=3000
+    build: .
     expose:
-      - 8080
+      - 80
     ports:
       - 80:8080
-  client:
-    build: ./client
-    expose:
-      - 3000
-  db:
-    image: mongo
-    expose:
-      - 27017
-    ports:
-      - 27017:27017
-    volumes:
-      - db:/data/db
-volumes:
-  db:
+    restart: always
