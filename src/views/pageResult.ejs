@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <%- include('head') %>
+  <body>
+    <%- include('titleAndNav') %> <% if (condition) { %>
+    <section class="error">
+      <p><%= error %></p>
+    </section>
+    <% } else { %>
+    <section>OK</section>
+    <% } %>
+  </body>
+</html>
