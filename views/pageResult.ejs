@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <%- include('head') %>
+  <body>
+    <%- include('titleAndNav') %> <% if (error) { %>
+    <section class="error"><%= error %></section>
+    <% } else { %>
+    <section class="result">
+      <p>
+        To create your book, you should print your pages in the following order
+      </p>
+      <p><%= result %></p>
+      <p class="reminder">
+        Remember to print double sided two pages per sheet with flipping aloung
+        the short side.
+      </p>
+    </section>
+    <% } %>
+  </body>
+</html>
