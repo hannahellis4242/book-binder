@@ -43,7 +43,7 @@ page.post("/submit", async (req, res) => {
     const response = await axios.get("http://page_sequence:8080/", {
       params: { signatures: `[${signatures}]` },
     });
-    const encoded = encode(response.data);
+    const encoded = encode(response.data.toString());
     res.redirect(`${resultUrl}${encoded}`);
   } catch (e: unknown) {
     if (e instanceof Error) {
