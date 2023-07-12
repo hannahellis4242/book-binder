@@ -11,7 +11,7 @@ app.set("view engine", "ejs");
 app.set("views", join(__dirname, "..", "views"));
 
 app.use(json());
-app.use(urlencoded());
+app.use(urlencoded({ extended: true }));
 app.use(express.static(join(__dirname, "..", "public")));
 
 app.use("/", home);

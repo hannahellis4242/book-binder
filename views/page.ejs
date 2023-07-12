@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
-  <%- include('head') %>
+  <head>
+    <%- include('head') %>
+  </head>
   <body>
     <%- include('titleAndNav') %>
     <section>
@@ -16,7 +18,7 @@
       </p>
       <form method="post" action="/page/submit">
         <label for="signatures">signature list:</label>
-        <input type="signatures" name="signatures" required />
+        <input type="text" name="signatures" required />
         <button type="submit">Submit</button>
       </form>
     </section>

@@ -3,6 +3,9 @@ services:
   page_sequence:
     image: ghcr.io/hannahellis4242/bpss/book-page-sequence-service:latest
     restart: always
+  sigature_finder:
+    image: ghcr.io/hannahellis4242/bsfs/book-signature-finder-service:latest
+    restart: always
   web:
     build: .
     expose:
