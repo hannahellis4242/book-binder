@@ -2,6 +2,7 @@ import { Router } from "express";
 import PageData from "../model/PageData";
 import axios from "axios";
 import ResultPage from "../model/ResultPage";
+import { encode } from "../utils";
 
 const data = new PageData("Page Sequence Calculator");
 const pattern = /^\s*\d+(?:\s*,\s*\d+)*\s*$/;
@@ -19,7 +20,7 @@ const resultList = [
   "FZSfL3PWQSR7IA==",
   "SGVrYXRl",
   "WW91IG11c3QgYmUgcmVhbGx5IGJvYXJk",
-  "rq2Ol/gdjAnWQA==",
+  "rq2Ol-gdjAnWQA==",
   "SGVsbG8gV29ybGQ=",
   "HTfSUlamSg70pg==",
   "+reNlhoRAyObKA==",
@@ -42,7 +43,7 @@ page.post("/submit", async (req, res) => {
     const response = await axios.get("http://page_sequence:8080/", {
       params: { signatures: `[${signatures}]` },
     });
-    const encoded = btoa(response.data);
+    const encoded = encode(response.data);
     res.redirect(`${resultUrl}${encoded}`);
   } catch (e: unknown) {
     if (e instanceof Error) {
