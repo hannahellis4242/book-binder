@@ -36,6 +36,31 @@
           <label for="maximum">maximum:</label>
           <input id="max" type="number" name="maximum" required value="4" />
         </fieldset>
+        <fieldset>
+          <legend>Number of sheets to use in signatures</legend>
+          <label for="three">3</label>
+          <input type="checkbox" name="three" />
+          <label for="four">4</label>
+          <input type="checkbox" name="four" />
+          <label for="five">5</label>
+          <input type="checkbox" name="five" />
+          <label for="six">6</label>
+          <input type="checkbox" name="six" />
+        </fieldset>
+        <fieldset>
+          <legend>Format</legend>
+          <label for="text">Text</label>
+          <input type="radio" name="format" value="text" checked />
+          <label for="json">JSON</label>
+          <input type="radio" name="format" value="json" />
+        </fieldset>
+        <fieldset>
+          <legend>Include Page Count</legend>
+          <label for="json">Yes</label>
+          <input type="radio" name="count" value="yes" checked />
+          <label for="text">No</label>
+          <input type="radio" name="count" value="no" />
+        </fieldset>
         <button type="submit">Submit</button>
       </form>
     </section>
