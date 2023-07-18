@@ -1,4 +1,8 @@
 import { Router } from "express";
+import PageData from "../model/PageData";
+import axios from "axios";
+
+const data = new PageData("Signature Finder");
 
 const signature = Router();
 signature.get("/", (_, res) => res.render("signatures"));
