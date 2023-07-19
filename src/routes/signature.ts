@@ -34,7 +34,7 @@ const determineEndpoint = (
   max: string,
   format: string,
   pages: string
-) => formatEndpoint(format) + pagesEndpoint(pages) + `\${min}\${max}`;
+) => formatEndpoint(format) + pagesEndpoint(pages) + `/${min}/${max}`;
 
 signature.post("/submit", async (req, res) => {
   console.log(req.body);
@@ -52,6 +52,7 @@ signature.post("/submit", async (req, res) => {
   if (six) {
     sizes.push(6);
   }
+  console.log("sizes :", sizes);
   if (sizes.length === 0) {
     res.redirect("/signature/error/length");
     return;
@@ -72,16 +73,18 @@ signature.post("/submit", async (req, res) => {
     res.redirect("/signatures/error/count");
     return;
   }
-  const response = await axios.get(
-    `http:\\signature-finder` +
-      determineEndpoint(
-        minimum.toString(),
-        maximum.toString(),
-        format.toString(),
-        count.toString()
-      ),
-    { params: { sizes } }
-  );
+  const url =
+    `http://signature-finder:8080` +
+    determineEndpoint(
+      minimum.toString(),
+      maximum.toString(),
+      format.toString(),
+      count.toString()
+    );
+  console.log("url :", url);
+  const response = await axios.get(url, {
+    params: { sizes: JSON.stringify(sizes) },
+  });
   console.log(response.data);
   res.redirect("/");
 });

@@ -5,6 +5,10 @@ services:
     restart: always
   sigature_finder:
     image: ghcr.io/hannahellis4242/bsfs/book-signature-finder-service:latest
+    expose:
+      - 8080
+    ports:
+      - 8080:8080
     restart: always
   web:
     build: .
