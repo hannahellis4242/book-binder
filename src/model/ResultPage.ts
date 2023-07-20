@@ -3,8 +3,8 @@ import PageErrorData from "./PageErrorData";
 
 export default class ResultPage extends PageErrorData {
   result: string;
-  constructor(title: string, result: string, error?: string) {
+  constructor(title: string, result: number[], error?: string) {
     super(title, error);
-    this.result = decode(result).replace(/,/g, ", ");
+    this.result = result.join(", ");
   }
 }

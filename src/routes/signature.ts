@@ -7,35 +7,6 @@ const data = new PageData("Signature Finder");
 const signature = Router();
 signature.get("/", (_, res) => res.render("signature", data));
 
-const formatEndpoint = (format: string) => {
-  switch (format) {
-    case "text":
-      return "/string";
-    case "json":
-      return "/json";
-    default:
-      return "";
-  }
-};
-
-const pagesEndpoint = (count: string) => {
-  switch (count) {
-    case "yes":
-      return "/pages";
-    case "no":
-      return "";
-    default:
-      return "";
-  }
-};
-
-const determineEndpoint = (
-  min: string,
-  max: string,
-  format: string,
-  pages: string
-) => formatEndpoint(format) + pagesEndpoint(pages) + `/${min}/${max}`;
-
 signature.post("/submit", async (req, res) => {
   console.log(req.body);
   const { minimum, maximum, three, four, five, six, format, count } = req.body;
@@ -73,17 +44,12 @@ signature.post("/submit", async (req, res) => {
     res.redirect("/signatures/error/count");
     return;
   }
-  const url =
-    `http://signature-finder:8080` +
-    determineEndpoint(
-      minimum.toString(),
-      maximum.toString(),
-      format.toString(),
-      count.toString()
-    );
-  console.log("url :", url);
-  const response = await axios.get(url, {
-    params: { sizes: JSON.stringify(sizes) },
+  const response = await axios.post("http://signature-finder:8080", {
+    minimum: parseInt(minimum),
+    maximum: parseInt(maximum),
+    sizes,
+    format,
+    pageCount: count,
   });
   console.log(response.data);
   res.redirect("/");

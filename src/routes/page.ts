@@ -2,7 +2,6 @@ import { Router } from "express";
 import PageData from "../model/PageData";
 import axios from "axios";
 import ResultPage from "../model/ResultPage";
-import { encode } from "../utils";
 
 const data = new PageData("Page Sequence Calculator");
 const pattern = /^\s*\d+(?:\s*,\s*\d+)*\s*$/;
@@ -12,23 +11,8 @@ const page = Router();
 page.get("/", (_, res) => res.render("page", data));
 
 const resultUrl = "/page/result/";
-const resultList = [
-  "XU0ukMbBZNoXjw==",
-  "RWFzdGVyIEVnZw==",
-  "8RiYWgVjGY7UzQ==",
-  "V2VsbCBkb25lIGRlY29kaW5nIHRoaXMgbWVzc2FnZQ==",
-  "FZSfL3PWQSR7IA==",
-  "SGVrYXRl",
-  "WW91IG11c3QgYmUgcmVhbGx5IGJvYXJk",
-  "rq2Ol-gdjAnWQA==",
-  "SGVsbG8gV29ybGQ=",
-  "HTfSUlamSg70pg==",
-  "+reNlhoRAyObKA==",
-];
-const redirectErrorUrl = (error: ErrorType) =>
-  `${resultUrl}${
-    resultList[Math.floor(Math.random() * resultList.length)]
-  }?error=${error}`;
+const redirectErrorUrl = (error: ErrorType) => `${resultUrl}?error=${error}`;
+
 page.post("/submit", async (req, res) => {
   const { signatures } = req.body;
   if (!signatures) {
@@ -40,11 +24,12 @@ page.post("/submit", async (req, res) => {
     return;
   }
   try {
-    const response = await axios.get("http://page_sequence:8080/", {
-      params: { signatures: `[${signatures}]` },
-    });
-    const encoded = encode(response.data.toString());
-    res.redirect(`${resultUrl}${encoded}`);
+    const signatureValues = JSON.parse(`[${signatures}]`);
+    const response = await axios.post(
+      "http://page_sequence:8080/",
+      signatureValues
+    );
+    res.redirect(`${resultUrl}?seq=${response.data}`);
   } catch (e: unknown) {
     if (e instanceof Error) {
       console.error(
@@ -101,13 +86,42 @@ const toErrorType = (s?: string): ErrorType | undefined => {
   }
 };
 
-page.get("/result/:result", (req, res) => {
-  const { error } = req.query;
-  const pageData = new ResultPage(
-    data.title,
-    req.params.result,
-    createErrorMessage(toErrorType(error?.toString()))
-  );
-  res.render("pageResult", pageData);
+page.get("/result/", async (req, res) => {
+  const { error, seq } = req.query;
+  if (error) {
+    const pageData = new ResultPage(
+      data.title,
+      [],
+      createErrorMessage(toErrorType(error?.toString()))
+    );
+    res.render("pageResult", pageData);
+    return;
+  }
+  if (!seq) {
+    res.redirect("/page?retry=true");
+    return;
+  }
+  try {
+    const response = await axios.get("http://page_sequence:8080/", {
+      params: { key: seq.toString() },
+    });
+    const pageData = new ResultPage(
+      data.title,
+      response.data,
+      createErrorMessage(toErrorType(error?.toString()))
+    );
+    res.render("pageResult", pageData);
+  } catch (e) {
+    console.error(
+      `***************\n
+        Exception thrown\n
+        time:${Date.now()}
+        url:/page/result\n
+        message : ${e}\n
+        ***************`
+    );
+    res.redirect("/page?retry=true");
+    return;
+  }
 });
 export default page;
