@@ -1,6 +1,7 @@
 import { Router } from "express";
 import PageData from "../model/PageData";
 import axios from "axios";
+import ResultPage from "../model/ResultPage";
 
 const data = new PageData("Signature Finder");
 
@@ -44,14 +45,38 @@ signature.post("/submit", async (req, res) => {
     res.redirect("/signatures/error/count");
     return;
   }
-  const response = await axios.post("http://signature-finder:8080", {
+  const response = await axios.post("http://sigature_finder:8080/", {
     minimum: parseInt(minimum),
     maximum: parseInt(maximum),
     sizes,
     format,
-    pageCount: count,
+    pageCount: count.toString() === "yes",
   });
-  console.log(response.data);
-  res.redirect("/");
+  res.redirect(`result?opts=${response.data}`);
+});
+signature.get("/result", async (req, res) => {
+  const { opts } = req.query;
+  if (!opts) {
+    res.redirect("/signatures?retry=true");
+    return;
+  }
+  try {
+    const response = await axios.get("http://page_sequence:8080/", {
+      params: { key: opts.toString() },
+    });
+    const pageData = new ResultSsgnature(data.title, response.data);
+    res.render("signatureResult", pageData);
+  } catch (e) {
+    console.error(
+      `***************\n
+        Exception thrown\n
+        time:${Date.now()}
+        url:/page/result\n
+        message : ${e}\n
+        ***************`
+    );
+    res.redirect("/page?retry=true");
+    return;
+  }
 });
 export default signature;

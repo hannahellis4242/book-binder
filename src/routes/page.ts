@@ -86,7 +86,7 @@ const toErrorType = (s?: string): ErrorType | undefined => {
   }
 };
 
-page.get("/result/", async (req, res) => {
+page.get("/result", async (req, res) => {
   const { error, seq } = req.query;
   if (error) {
     const pageData = new ResultPage(
