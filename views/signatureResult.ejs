@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('head') %>
+  </head>
+  <body>
+    <%- include('titleAndNav') %> <% if (error) { %>
+    <section class="error"><%= error %></section>
+    <% } else { %>
+    <section class="result">
+      <p>
+        Here is the different numbers each signature sizes you can use to create your book
+      </p>
+      <p>
+        <ul>
+        <% result.forEach((item) => { %>
+          <li><%= item %></li>
+        <% }); %>
+      </ul>
+    </p>
+      <p class="reminder">
+        Remember that you can order your signatures however you like, these options are just the number required of a particular sized signature
+      </p>
+    </section>
+    <% } %>
+  </body>
+</html>
