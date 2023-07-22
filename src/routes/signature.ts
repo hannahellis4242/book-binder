@@ -1,7 +1,7 @@
 import { Router } from "express";
 import PageData from "../model/PageData";
 import axios from "axios";
-import ResultPage from "../model/ResultPage";
+import ResultSignature from "../model/ResultSignature";
 
 const data = new PageData("Signature Finder");
 
@@ -52,9 +52,10 @@ signature.post("/submit", async (req, res) => {
     format,
     pageCount: count.toString() === "yes",
   });
-  res.redirect(`result?opts=${response.data}`);
+  res.redirect(`result/${format}?opts=${response.data}`);
 });
-signature.get("/result", async (req, res) => {
+
+signature.get("/result/:format", async (req, res) => {
   const { opts } = req.query;
   if (!opts) {
     res.redirect("/signatures?retry=true");
@@ -64,7 +65,11 @@ signature.get("/result", async (req, res) => {
     const response = await axios.get("http://page_sequence:8080/", {
       params: { key: opts.toString() },
     });
-    const pageData = new ResultSsgnature(data.title, response.data);
+    if (req.params.format === "json") {
+      res.json(JSON.parse(response.data));
+      return;
+    }
+    const pageData = new ResultSignature(data.title, response.data);
     res.render("signatureResult", pageData);
   } catch (e) {
     console.error(
