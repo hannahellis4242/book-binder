@@ -1,7 +1,7 @@
 import { Router } from "express";
 import PageData from "../model/PageData";
 import axios from "axios";
-import ResultPage from "../model/ResultPage";
+import ResultSignature from "../model/ResultSignature";
 
 const data = new PageData("Signature Finder");
 
