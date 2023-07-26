@@ -45,14 +45,19 @@ signature.post("/submit", async (req, res) => {
     res.redirect("/signatures/error/count");
     return;
   }
-  const response = await axios.post("http://sigature_finder:8080/", {
-    minimum: parseInt(minimum),
-    maximum: parseInt(maximum),
-    sizes,
-    format,
-    pageCount: count.toString() === "yes",
-  });
-  res.redirect(`result/${format}?opts=${response.data}`);
+  try {
+    const response = await axios.post("http://sigature_finder:8080/", {
+      minimum: parseInt(minimum),
+      maximum: parseInt(maximum),
+      sizes,
+      format,
+      pageCount: count.toString() === "yes",
+    });
+    res.redirect(`result/${format}?opts=${response.data}`);
+  } catch (e) {
+    console.log(e);
+    res.redirect(`result/${format}?error=unknown`);
+  }
 });
 
 signature.get("/result/:format", async (req, res) => {
