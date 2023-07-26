@@ -58,7 +58,7 @@ signature.post("/submit", async (req, res) => {
 signature.get("/result/:format", async (req, res) => {
   const { opts } = req.query;
   if (!opts) {
-    res.redirect("/signatures?retry=true");
+    res.redirect("/signature?retry=true");
     return;
   }
   try {
@@ -66,7 +66,7 @@ signature.get("/result/:format", async (req, res) => {
       params: { key: opts.toString() },
     });
     if (req.params.format === "json") {
-      res.json(JSON.parse(response.data));
+      res.json(response.data);
       return;
     }
     const pageData = new ResultSignature(data.title, response.data);
@@ -76,11 +76,11 @@ signature.get("/result/:format", async (req, res) => {
       `***************\n
         Exception thrown\n
         time:${Date.now()}
-        url:/page/result\n
+        url:/signature/result\n
         message : ${e}\n
         ***************`
     );
-    res.redirect("/page?retry=true");
+    res.redirect("/signature?retry=true");
     return;
   }
 });

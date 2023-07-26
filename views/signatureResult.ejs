@@ -6,7 +6,8 @@
 </head>
 
 <body>
-  <%- include('titleAndNav') %> <% if (error) { %>
+  <%- include('titleAndNav') %>
+  <% if (error) { %>
   <section class="error"><%= error %></section>
   <% } else { %>
   <section class="result">
@@ -30,6 +31,7 @@
     <p class="reminder">
       Remember that you can order your signatures however you like, these options are just the number required of a particular sized signature
     </p>
+    <% } %>
   </section>
   <% } %>
 </body>
