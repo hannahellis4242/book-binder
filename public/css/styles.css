@@ -2,12 +2,6 @@ body {
   background-color: darkblue;
 }
 
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
 .error {
   color: red;
   background-color: white;
@@ -32,6 +26,8 @@ header.title {
   justify-content: space-between;
   padding: 1.1rem 5rem;
   background: linear-gradient(180deg, #6fb4fd 0%, #5caafc 100%);
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .brand a {
