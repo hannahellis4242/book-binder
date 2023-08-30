@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include('../head') %>
+</head>
+
+<body>
+  <%- include('../titleAndNav') %>
+  <section>
+    <p>Your book must contain :
+    <ul>
+      <% signatures.forEach((signatures) => { %>
+      <li>
+        <%= signatures.count %> signatures with <%= signatures.size %> sheets
+      </li>
+      <% }); %>
+    </ul>
+    </p>
+    <p>For example a book made of the following list of signatures</p>
+    <p>5,5,4</p>
+    <p>
+      would be a book with a five sheet signature followed by another 5 sheet
+      signature and finally a four sheet signature
+    </p>
+    <% if retry { %>
+    <p> Be careful to include all required signatures and to not add any extra ones</p>
+    <% } %>
+  </section>
+  <form method="post" action="/create/sequence">
+    <label for="sequence">Enter a sequance of signatures :</label>
+    <input type="text" name="sequence" required />
+    <button type="submit">Continue</button>
+  </form>
+</body>
+
+</html>
