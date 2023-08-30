@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../head') %>
+  </head>
+  <body>
+    <%- include('../titleAndNav') %>
+    <form method="post" action="/create/options">
+      <fieldset>
+        <legend>Options</legend>
+        <% options.forEach((option) => { %>
+        <label>
+          <input type="radio" name="option" value="<%= option %>" />
+          <%= option %>
+        </label>
+        <% }); %>
+      </fieldset>
+      <button type="submit">Continue</button>
+    </form>
+  </body>
+</html>
