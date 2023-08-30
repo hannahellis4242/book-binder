@@ -3,7 +3,10 @@ import PageData from "../../model/PageData";
 import axios from "axios";
 import Problem from "../../model/SignatureFinder/Problem";
 import SignatureList from "../../model/SignatureFinder/SignatureList";
-import { decodeSignatureOption, encodeSignatureOption } from "../../utils";
+import {
+  readSignatureOption,
+  writeSignatureOption,
+} from "../../util/signatureOptionIO";
 
 const data = new PageData("Signature Options");
 
@@ -44,7 +47,7 @@ options.get("/", async (req, res) => {
     if (req.session.report) {
       report.signatureOptions = options;
     }
-    const optionStrs = options.map(encodeSignatureOption);
+    const optionStrs = options.map(writeSignatureOption);
     console.log("options :", optionStrs);
     res.render("create/options", {
       ...data,
@@ -56,13 +59,12 @@ options.get("/", async (req, res) => {
   }
 });
 options.post("/", (req, res) => {
-  console.log("options - post body :", req.body);
   const { option } = req.body;
   const { report } = req.session;
   if (report) {
-    report.selectedOption = decodeSignatureOption(option);
+    report.selectedOption = readSignatureOption(option);
   }
-  console.log(JSON.stringify(report));
+  console.log(JSON.stringify(report, null, 2));
   res.redirect("/create/sequence");
 });
 
