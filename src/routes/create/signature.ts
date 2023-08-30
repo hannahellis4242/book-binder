@@ -3,25 +3,14 @@ import PageData from "../../model/PageData";
 
 const data = new PageData("Pages in your book");
 
-const signatures = Router();
-pages.get("/", (_, res) => res.render("create/max", data));
-pages.post("/", (req, res) => {
-  const { value } = req.body;
-  if (!value) {
-    res.redirect("/error");
-    return;
-  }
-  const num = Number.parseInt(value);
-  if (Number.isNaN(num)) {
-    res.redirect("/error");
-    return;
-  }
+const signature = Router();
+signature.get("/", (_, res) => res.render("create/signatures", data));
+signature.post("/", (req, res) => {
   const { report } = req.session;
   if (report) {
-    report.maxAllowed = num;
+    report.sizes = Object.keys(req.body).map((x) => Number.parseInt(x));
   }
-  console.log(report);
-  res.redirect("/create/signatures");
+  res.redirect("/create/options");
 });
 
-export default pages;
+export default signature;

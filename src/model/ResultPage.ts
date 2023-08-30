@@ -1,4 +1,3 @@
-import { decode } from "../utils";
 import PageErrorData from "./PageErrorData";
 
 export default class ResultPage extends PageErrorData {
