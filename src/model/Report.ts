@@ -8,5 +8,5 @@ export default interface Report {
   selectedOption: SignatureList;
   sequence: number[];
   pageSequence: number[];
-  signiturePageSequence: number[][];
+  signaturePageSequence: number[][];
 }

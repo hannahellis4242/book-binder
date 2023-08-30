@@ -1,12 +1,12 @@
 import SignatureList, {
   SignatureListEntry,
-} from "./model/SignatureFinder/SignatureList";
+} from "../model/SignatureFinder/SignatureList";
 
-export const encodeSignatureOption = (option: SignatureList): string =>
+export const writeSignatureOption = (option: SignatureList): string =>
   option.signatures.map(({ size, count }) => `${size}:${count}`).join(",") +
   (option.pages ? `;${option.pages}` : "");
 
-export const decodeSignatureOption = (encoded: string): SignatureList => {
+export const readSignatureOption = (encoded: string): SignatureList => {
   const [entries, pages] = encoded.split(";");
   const sizes = entries.split(",");
   const signatures = sizes
