@@ -16,18 +16,26 @@ sequence.get("/", async (req, res) => {
     res.redirect("/error");
     return;
   }
-  const retry = "retry" in req.query;
+  const showRetry = "retry" in req.query;
   res.render("create/sequence", {
     ...data,
     signatures: selectedOption.signatures,
-    retry,
+    showRetry,
   });
 });
 sequence.post("/", (req, res) => {
   console.log("sequence post body :", req.body);
-  const sequence = `${req.body}`
+  const { sequence } = req.body;
+  if (!sequence) {
+    res.redirect("/error");
+    return;
+  }
+  console.log("sequence :", sequence);
+  const signatureSequence = sequence
+    .toString()
     .split(",")
     .map((x: string) => Number.parseInt(x));
+  console.log("signatureSequence :", signatureSequence);
   const { report } = req.session;
   if (!report) {
     res.redirect("/error");
@@ -38,7 +46,7 @@ sequence.post("/", (req, res) => {
     res.redirect("/error");
     return;
   }
-  if (!sequenceMatches(selectedOption, sequence)) {
+  if (!sequenceMatches(selectedOption, signatureSequence)) {
     res.redirect("/create/sequence?retry=true");
     return;
   }

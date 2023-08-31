@@ -20,6 +20,14 @@ body {
   padding: 10px;
 }
 
+section {
+  color: lightgray;
+}
+
+form {
+  color: lightgray;
+}
+
 header.title {
   display: flex;
   align-items: center;
