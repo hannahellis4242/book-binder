@@ -31,7 +31,7 @@ sequence.post("/", (req, res) => {
     return;
   }
   console.log("sequence :", sequence);
-  const signatureSequence = sequence
+  const signatureSequence: number[] = sequence
     .toString()
     .split(",")
     .map((x: string) => Number.parseInt(x));
@@ -50,7 +50,7 @@ sequence.post("/", (req, res) => {
     res.redirect("/create/sequence?retry=true");
     return;
   }
-  report.sequence = sequence;
+  report.sequence = signatureSequence;
   console.log(JSON.stringify(req.session.report, null, 2));
   res.redirect("/create/report");
 });

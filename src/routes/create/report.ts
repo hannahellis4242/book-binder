@@ -2,7 +2,8 @@ import { Router } from "express";
 import PageData from "../../model/PageData";
 import Report from "../../model/Report";
 import axios from "axios";
-import showReport from "../../util/showReport";
+import showReport, { showSequence } from "../../util/showReport";
+import { writeSignatureOption } from "../../util/signatureOptionIO";
 
 const data = new PageData("Report");
 
@@ -42,6 +43,24 @@ const fullReport = ({
   return undefined;
 };
 
+interface ReportData {
+  pages: number;
+  signatureSequence: string;
+  pageOrder: {
+    bySigature: string[];
+    full: string;
+  };
+}
+
+const reportData = (report: Report): ReportData => ({
+  pages: report.selectedOption.pages || 0,
+  signatureSequence: showSequence(report.sequence),
+  pageOrder: {
+    bySigature: report.signaturePageSequence.map((x) => showSequence(x)),
+    full: showSequence(report.pageSequence),
+  },
+});
+
 const report = Router();
 report.get("/", async (req, res) => {
   const { report } = req.session;
@@ -68,9 +87,10 @@ report.get("/", async (req, res) => {
       res.redirect("/error");
       return;
     }
+    console.log(JSON.stringify(reportData(full), null, 2));
     res.render("create/report", {
       ...data,
-      text: showReport(full),
+      text: reportData(full),
     });
   } catch (err) {
     console.log(err);

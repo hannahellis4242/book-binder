@@ -1,10 +1,10 @@
 import Report from "../model/Report";
 import { writeSignatureOption } from "./signatureOptionIO";
 
-const showSequence = (x: number[]): string =>
+export const showSequence = (x: number[]): string =>
   x.map((x) => x.toString()).join(", ");
 const showSignaturePages = (x: number[][]) =>
-  x.map((x) => showSequence(x)).join("\n");
+  x.map((x, i) => `${i + 1}\t${showSequence(x)}`).join("\n");
 
 const showReport = ({
   selectedOption,
