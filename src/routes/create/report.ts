@@ -2,6 +2,7 @@ import { Router } from "express";
 import PageData from "../../model/PageData";
 import Report from "../../model/Report";
 import axios from "axios";
+import showReport from "../../util/showReport";
 
 const data = new PageData("Report");
 
@@ -62,9 +63,14 @@ report.get("/", async (req, res) => {
       .then(({ data }) => data);
     report.signaturePageSequence = pageSequences;
     report.pageSequence = pageSequences.flat();
+    const full = fullReport(report);
+    if (!full) {
+      res.redirect("/error");
+      return;
+    }
     res.render("create/report", {
       ...data,
-      report: fullReport(report),
+      text: showReport(full),
     });
   } catch (err) {
     console.log(err);
@@ -82,6 +88,6 @@ report.get("/save", (req, res) => {
     res.redirect("/error");
     return;
   }
-  res.attachment("report.txt").type("txt").send(show(full));
+  res.attachment("report.txt").type("txt").send(showReport(full));
 });
 export default report;
