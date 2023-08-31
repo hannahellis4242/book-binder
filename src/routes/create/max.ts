@@ -18,6 +18,10 @@ max.post("/", (req, res) => {
   }
   const { report } = req.session;
   if (report) {
+    const { pages } = report;
+    if (pages && pages > num) {
+      res.redirect("/create/max?retry=true");
+    }
     report.maxAllowed = num;
   }
   console.log(report);
