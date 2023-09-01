@@ -1,8 +1,5 @@
 import { Router } from "express";
-import PageData from "../../model/PageData";
-import sequenceMatches from "../../util/sequenceMatches";
-
-const data = new PageData("Signature Sequence");
+import sequenceMatches from "../util/sequenceMatches";
 
 const sequence = Router();
 sequence.get("/", async (req, res) => {
@@ -17,8 +14,7 @@ sequence.get("/", async (req, res) => {
     return;
   }
   const showRetry = "retry" in req.query;
-  res.render("create/sequence", {
-    ...data,
+  res.render("sequence", {
     signatures: selectedOption.signatures,
     showRetry,
   });

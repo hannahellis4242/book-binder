@@ -1,14 +1,11 @@
 import { Router } from "express";
-import PageData from "../../model/PageData";
 import axios from "axios";
-import Problem from "../../model/SignatureFinder/Problem";
-import SignatureList from "../../model/SignatureFinder/SignatureList";
+import Problem from "../model/SignatureFinder/Problem";
+import SignatureList from "../model/SignatureFinder/SignatureList";
 import {
   readSignatureOption,
   writeSignatureOption,
-} from "../../util/signatureOptionIO";
-
-const data = new PageData("Signature Options");
+} from "../util/signatureOptionIO";
 
 const url = "http://sigature_finder:8080/";
 
@@ -49,8 +46,7 @@ options.get("/", async (req, res) => {
     }
     const optionStrs = options.map(writeSignatureOption);
     console.log("options :", optionStrs);
-    res.render("create/options", {
-      ...data,
+    res.render("options", {
       options: optionStrs,
     });
   } catch (err) {

@@ -1,12 +1,9 @@
 import { Router } from "express";
-import PageData from "../../model/PageData";
-import Report from "../../model/Report";
+import Report from "../model/Report";
 import axios from "axios";
-import showReport, { showSequence } from "../../util/showReport";
-import { writeSignatureOption } from "../../util/signatureOptionIO";
-import createScript from "../../util/createScript";
-
-const data = new PageData("Report");
+import showReport, { showSequence } from "../util/showReport";
+import { writeSignatureOption } from "../util/signatureOptionIO";
+import createScript from "../util/createScript";
 
 const url = "http://page_sequence:8080/separated";
 
@@ -89,8 +86,7 @@ report.get("/", async (req, res) => {
       return;
     }
     console.log(JSON.stringify(reportData(full), null, 2));
-    res.render("create/report", {
-      ...data,
+    res.render("report", {
       text: reportData(full),
     });
   } catch (err) {

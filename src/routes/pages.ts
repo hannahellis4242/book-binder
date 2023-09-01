@@ -1,10 +1,7 @@
 import { Router } from "express";
-import PageData from "../../model/PageData";
-
-const data = new PageData("Pages in your book");
 
 const pages = Router();
-pages.get("/", (_, res) => res.render("create/pages", data));
+pages.get("/", (_, res) => res.render("pages"));
 pages.post("/", (req, res) => {
   const { value } = req.body;
   if (!value) {

@@ -1,10 +1,7 @@
 import { Router } from "express";
-import PageData from "../../model/PageData";
-
-const data = new PageData("Pages in your book");
 
 const max = Router();
-max.get("/", (_, res) => res.render("create/max", data));
+max.get("/", (_, res) => res.render("max"));
 max.post("/", (req, res) => {
   const { value } = req.body;
   if (!value) {

@@ -1,10 +1,7 @@
 import { Router } from "express";
-import PageData from "../../model/PageData";
-
-const data = new PageData("Create a book");
 
 const start = Router();
-start.get("/", (_, res) => res.render("create/start", data));
+start.get("/", (_, res) => res.render("start"));
 start.post("/", (req, res) => {
   req.session.report = {};
   res.redirect("/pages");
