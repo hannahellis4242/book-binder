@@ -6,6 +6,7 @@
   <body>
     <%- include('../titleAndNav') %>
     <section>
+      <header>About your book</header>
       <table>
         <tr>
           <td>pages</td>
@@ -34,7 +35,16 @@
           <td colspan="2"><%= text.pageOrder.full %></td>
         </tr>
       </table>
+      <a href="/create/report/save">save</a>
     </section>
-    <a href="/create/report/save">save</a>
+
+    <section>
+      <header>Pdftk Script</header>
+      <form method="post" action="/create/report">
+        <label for="filename">filename</label>
+        <input type="text" name="filename" />
+        <button type="submit">Get Script</button>
+      </form>
+    </section>
   </body>
 </html>
