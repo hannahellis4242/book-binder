@@ -4,6 +4,7 @@ import Report from "../../model/Report";
 import axios from "axios";
 import showReport, { showSequence } from "../../util/showReport";
 import { writeSignatureOption } from "../../util/signatureOptionIO";
+import createScript from "../../util/createScript";
 
 const data = new PageData("Report");
 
@@ -111,6 +112,22 @@ report.get("/save", (req, res) => {
   res.attachment("report.txt").type("txt").send(showReport(full));
 });
 report.post("/", (req, res) => {
-  res.send("TODO");
+  console.log("report post body :", req.body);
+  const { filename } = req.body;
+  if (!filename) {
+    res.redirect("/error");
+    return;
+  }
+  const { report } = req.session;
+  if (!report) {
+    res.redirect("/error");
+    return;
+  }
+  const full = fullReport(report);
+  if (!full) {
+    res.redirect("/error");
+    return;
+  }
+  res.attachment("binding.sh").type("sh").send(createScript(full, filename));
 });
 export default report;
