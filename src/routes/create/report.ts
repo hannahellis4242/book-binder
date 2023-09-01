@@ -47,7 +47,7 @@ interface ReportData {
   pages: number;
   signatureSequence: string;
   pageOrder: {
-    bySigature: string[];
+    bySignature: string[];
     full: string;
   };
 }
@@ -56,7 +56,7 @@ const reportData = (report: Report): ReportData => ({
   pages: report.selectedOption.pages || 0,
   signatureSequence: showSequence(report.sequence),
   pageOrder: {
-    bySigature: report.signaturePageSequence.map((x) => showSequence(x)),
+    bySignature: report.signaturePageSequence.map((x) => showSequence(x)),
     full: showSequence(report.pageSequence),
   },
 });
@@ -109,5 +109,8 @@ report.get("/save", (req, res) => {
     return;
   }
   res.attachment("report.txt").type("txt").send(showReport(full));
+});
+report.post("/", (req, res) => {
+  res.send("TODO");
 });
 export default report;
