@@ -3,3 +3,29 @@ body {
   color: lightgray;
   padding: 2%;
 }
+
+header {
+  font-size: large;
+  color: white;
+  font-weight: bold;
+}
+
+a {
+  color: white;
+}
+
+a:focus {
+  background-color: lightblue;
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  background-color: lightblue;
+  color: black;
+  text-decoration: none;
+}
+
+a:active {
+  background-color: black;
+}
