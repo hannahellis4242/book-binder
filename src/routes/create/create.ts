@@ -8,7 +8,7 @@ import sequence from "./sequence";
 import report from "./report";
 
 const create = Router();
-create.use("/start", start);
+create.use("/", start);
 create.use("/pages", pages);
 create.use("/max", max);
 create.use("/signatures", signature);

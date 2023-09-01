@@ -7,7 +7,7 @@ const start = Router();
 start.get("/", (_, res) => res.render("create/start", data));
 start.post("/", (req, res) => {
   req.session.report = {};
-  res.redirect("/create/pages");
+  res.redirect("/pages");
 });
 
 export default start;

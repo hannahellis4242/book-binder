@@ -1,5 +1,4 @@
 import Report from "../model/Report";
-import sequence from "../routes/create/sequence";
 
 const createSequenceInstruction = (
   sequence: number[],

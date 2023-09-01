@@ -24,10 +24,7 @@ app.use(urlencoded({ extended: true }));
 app.use(express.static(join(__dirname, "..", "public")));
 app.use(session({ secret: "secret", resave: false }));
 
-app.use("/", home);
-app.use("/page", page);
-app.use("/signature", signature);
-app.use("/create", create);
+app.use("/", create);
 
 const port = 8080;
 // Start the server

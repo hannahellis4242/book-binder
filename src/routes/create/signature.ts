@@ -10,10 +10,10 @@ signature.post("/", (req, res) => {
   if (report) {
     report.sizes = Object.keys(req.body).map((x) => Number.parseInt(x));
     if (report.sizes.length === 0) {
-      res.redirect("/create/signatures?retry=true");
+      res.redirect("/signatures?retry=true");
     }
   }
-  res.redirect("/create/options");
+  res.redirect("/options");
 });
 
 export default signature;
