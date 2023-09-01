@@ -56,11 +56,16 @@ options.get("/", async (req, res) => {
 });
 options.post("/", (req, res) => {
   const { option } = req.body;
-  const { report } = req.session;
-  if (report) {
-    report.selectedOption = readSignatureOption(option);
+  if (!option) {
+    res.redirect("/error");
+    return;
   }
-  console.log(JSON.stringify(report, null, 2));
+  const { report } = req.session;
+  if (!report) {
+    res.redirect("/error");
+    return;
+  }
+  report.selectedOption = readSignatureOption(option);
   res.redirect("/sequence");
 });
 
