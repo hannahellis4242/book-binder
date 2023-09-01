@@ -21,7 +21,7 @@ pages.post("/", (req, res) => {
     report.pages = num;
   }
   console.log(report);
-  res.redirect("/create/max");
+  res.redirect("/max");
 });
 
 export default pages;

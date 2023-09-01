@@ -65,7 +65,7 @@ options.post("/", (req, res) => {
     report.selectedOption = readSignatureOption(option);
   }
   console.log(JSON.stringify(report, null, 2));
-  res.redirect("/create/sequence");
+  res.redirect("/sequence");
 });
 
 export default options;

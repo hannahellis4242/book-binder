@@ -47,12 +47,12 @@ sequence.post("/", (req, res) => {
     return;
   }
   if (!sequenceMatches(selectedOption, signatureSequence)) {
-    res.redirect("/create/sequence?retry=true");
+    res.redirect("/sequence?retry=true");
     return;
   }
   report.sequence = signatureSequence;
   console.log(JSON.stringify(req.session.report, null, 2));
-  res.redirect("/create/report");
+  res.redirect("/report");
 });
 
 export default sequence;

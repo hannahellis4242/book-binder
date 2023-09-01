@@ -20,12 +20,12 @@ max.post("/", (req, res) => {
   if (report) {
     const { pages } = report;
     if (pages && pages > num) {
-      res.redirect("/create/max?retry=true");
+      res.redirect("/max?retry=true");
     }
     report.maxAllowed = num;
   }
   console.log(report);
-  res.redirect("/create/signatures");
+  res.redirect("/signatures");
 });
 
 export default max;
