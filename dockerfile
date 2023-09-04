@@ -5,7 +5,6 @@ RUN npm i
 
 COPY tsconfig.json .
 COPY public ./public
-RUN mv /scripts ./public
 COPY views ./views
 COPY src ./src
 RUN npx tsc
