@@ -7,12 +7,21 @@
     <form method="post" action="/options">
       <fieldset>
         <legend>Options</legend>
-        <% options.forEach((option) => { %>
-        <label>
-          <input type="radio" name="option" value="<%= option %>" />
-          <%= option %>
-        </label>
-        <% }); %>
+        <ul>
+          <% options.forEach((option,i) => { %>
+          <li>
+            <label>
+              <input
+                type="radio"
+                name="option"
+                value="<%= option %>"
+                id="<%= i + 1 %>"
+              />
+              <%= option %>
+            </label>
+          </li>
+          <% }); %>
+        </ul>
       </fieldset>
       <button type="submit">Continue</button>
     </form>
