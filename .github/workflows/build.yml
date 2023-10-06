@@ -2,8 +2,7 @@ name: Docker Image CI - web
 
 on:
   push:
-    paths:
-      - "web/**"
+    branches: ["main"]
 
 jobs:
   build:
