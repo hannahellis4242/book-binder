@@ -9,6 +9,9 @@ services:
   sigature_finder:
     image: ghcr.io/hannahellis4242/bsfs/book-signature-finder-service:latest
     restart: always
+  signature_order:
+    image: ghcr.io/hannahellis4242/bsoo/book-signature-order-options:latest
+    restart: always
   web:
     build: .
     expose:
