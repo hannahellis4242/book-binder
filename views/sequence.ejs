@@ -27,8 +27,22 @@
     <% } %>
   </section>
   <form method="post" action="/sequence">
-    <label for="sequence">Enter a sequance of signatures :</label>
-    <input type="text" name="sequence" required />
+    <label for="sequence">Pick a sequance of signatures :</label>
+    <ul>
+      <% options.forEach((option,i) => { %>
+      <li>
+        <label>
+          <input
+            type="radio"
+            name="sequence"
+            value="<%= option %>"
+            id="<%= i + 1 %>"
+          />
+          <%= option %>
+        </label>
+      </li>
+      <% }); %>
+    </ul>
     <button type="submit">Continue</button>
   </form>
 </body>

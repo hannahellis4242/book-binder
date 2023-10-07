@@ -45,7 +45,6 @@ options.get("/", async (req, res) => {
       report.signatureOptions = options;
     }
     const optionStrs = options.map(writeSignatureOption);
-    console.log("options :", optionStrs);
     res.render("options", {
       options: optionStrs,
     });
