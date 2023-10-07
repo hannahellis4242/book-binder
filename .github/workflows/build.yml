@@ -1,0 +1,23 @@
+name: Docker Image CI - web
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Build And Push web Image
+        run: |
+          docker build . --tag ghcr.io/hannahellis4242/book-binder:latest
+          docker push ghcr.io/hannahellis4242/book-binder:latest

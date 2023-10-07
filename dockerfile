@@ -1,5 +1,4 @@
-FROM node:current-alpine
-
+FROM node:current-alpine as client
 WORKDIR /web
 COPY package.json .
 RUN npm i

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include('head') %>
+</head>
+
+<body>
+  <section>
+    <p>Your book must contain :
+    <ul>
+      <% signatures.forEach((signatures) => { %>
+      <li>
+        <%= signatures.count %> signatures with <%= signatures.size %> sheets
+      </li>
+      <% }); %>
+    </ul>
+    </p>
+    <p>For example a book made of the following list of signatures</p>
+    <p>5,5,4</p>
+    <p>
+      would be a book with a five sheet signature followed by another 5 sheet
+      signature and finally a four sheet signature
+    </p>
+    <% if(showRetry) { %>
+    <p> Be careful to include all required signatures and to not add any extra ones</p>
+    <% } %>
+  </section>
+  <form method="post" action="/sequence">
+    <label for="sequence">Pick a sequance of signatures :</label>
+    <ul>
+      <% options.forEach((option,i) => { %>
+      <li>
+        <label>
+          <input
+            type="radio"
+            name="sequence"
+            value="<%= option %>"
+            id="<%= i + 1 %>"
+          />
+          <%= option %>
+        </label>
+      </li>
+      <% }); %>
+    </ul>
+    <button type="submit">Continue</button>
+  </form>
+</body>
+
+</html>

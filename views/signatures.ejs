@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('head') %>
+  </head>
+  <body>
+    <form method="post" action="/signatures">
+      <fieldset>
+        <legend>Number of sheets to use in signatures</legend>
+        <ul>
+          <li>
+            <label for="3">3</label><input type="checkbox" name="3" id="3" />
+          </li>
+          <li>
+            <label for="4">4</label> <input type="checkbox" name="4" id="4" />
+          </li>
+          <li>
+            <label for="5">5</label> <input type="checkbox" name="5" id="5" />
+          </li>
+          <li>
+            <label for="6">6</label> <input type="checkbox" name="6" id="6" />
+          </li>
+        </ul>
+        <p>You must select at least one</p>
+      </fieldset>
+      <button type="submit">Continue</button>
+    </form>
+  </body>
+</html>
