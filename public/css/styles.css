@@ -1,7 +1,8 @@
 body {
-  background-color: darkblue;
+  background-color: #789e9e;
   color: lightgray;
   padding: 2%;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 header {
