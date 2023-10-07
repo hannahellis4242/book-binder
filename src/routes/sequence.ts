@@ -24,12 +24,12 @@ sequence.get("/", async (req, res) => {
   try {
     console.log("signatures : ", selectedOption.signatures);
     const key = await axios
-      .post(url, selectedOption.signatures)
+      .post<string>(url, selectedOption.signatures)
       .then(({ data }) => data);
-    console.log("key :", key);
-    const result = await axios.get(`${url}/${key}`).then(({ data }) => data);
-    const options = OptionsSchema.parse(result);
-    console.log("options :", options);
+    const options = await axios
+      .get(`${url}/${key}`)
+      .then(({ data }) => data)
+      .then((x) => OptionsSchema.parse(x));
     const showRetry = "retry" in req.query;
     res.render("sequence", {
       signatures: selectedOption.signatures,
@@ -41,6 +41,7 @@ sequence.get("/", async (req, res) => {
     res.redirect("/error");
   }
 });
+
 sequence.post("/", (req, res) => {
   console.log("sequence post body :", req.body);
   const { sequence } = req.body;
