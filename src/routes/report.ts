@@ -1,44 +1,14 @@
 import { Router } from "express";
-import Report from "../model/Report";
+import Report, { ReportSchema } from "../model/Report";
 import axios from "axios";
 import showReport, { showSequence } from "../util/showReport";
-import { writeSignatureOption } from "../util/signatureOptionIO";
 import createScript from "../util/createScript";
 
 const url = "http://page_sequence:8080/separated";
 
-const fullReport = ({
-  pages,
-  maxAllowed,
-  sizes,
-  signatureOptions,
-  selectedOption,
-  sequence,
-  pageSequence,
-  signaturePageSequence,
-}: Partial<Report>): Report | undefined => {
-  if (
-    pages &&
-    maxAllowed &&
-    sizes &&
-    signatureOptions &&
-    selectedOption &&
-    sequence &&
-    pageSequence &&
-    signaturePageSequence
-  ) {
-    return {
-      pages,
-      maxAllowed,
-      sizes,
-      signatureOptions,
-      selectedOption,
-      sequence,
-      pageSequence,
-      signaturePageSequence,
-    };
-  }
-  return undefined;
+const fullReport = (report: Partial<Report>): Report | undefined => {
+  const result = ReportSchema.safeParse(report);
+  return result.success ? result.data : undefined;
 };
 
 interface ReportData {
@@ -85,7 +55,6 @@ report.get("/", async (req, res) => {
       res.redirect("/error");
       return;
     }
-    console.log(JSON.stringify(reportData(full), null, 2));
     res.render("report", {
       text: reportData(full),
     });
@@ -108,7 +77,6 @@ report.get("/save", (req, res) => {
   res.attachment("report.txt").type("txt").send(showReport(full));
 });
 report.post("/", (req, res) => {
-  console.log("report post body :", req.body);
   const { filename } = req.body;
   if (!filename) {
     res.redirect("/error");

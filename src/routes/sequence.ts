@@ -22,7 +22,6 @@ sequence.get("/", async (req, res) => {
   }
 
   try {
-    console.log("signatures : ", selectedOption.signatures);
     const key = await axios
       .post<string>(url, selectedOption.signatures)
       .then(({ data }) => data);
@@ -43,18 +42,15 @@ sequence.get("/", async (req, res) => {
 });
 
 sequence.post("/", (req, res) => {
-  console.log("sequence post body :", req.body);
   const { sequence } = req.body;
   if (!sequence) {
     res.redirect("/error");
     return;
   }
-  console.log("sequence :", sequence);
   const signatureSequence: number[] = sequence
     .toString()
     .split(",")
     .map((x: string) => Number.parseInt(x));
-  console.log("signatureSequence :", signatureSequence);
   const { report } = req.session;
   if (!report) {
     res.redirect("/error");
@@ -70,7 +66,6 @@ sequence.post("/", (req, res) => {
     return;
   }
   report.sequence = signatureSequence;
-  console.log(JSON.stringify(req.session.report, null, 2));
   res.redirect("/report");
 });
 

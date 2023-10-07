@@ -1,6 +1,5 @@
-import SignatureList, {
-  SignatureListEntry,
-} from "../model/SignatureFinder/SignatureList";
+import SignatureList from "../model/SignatureFinder/SignatureList";
+import SignatureListEntry from "../model/SignatureFinder/SignatureListEntry";
 
 export const writeSignatureOption = (option: SignatureList): string =>
   option.signatures.map(({ size, count }) => `${size}:${count}`).join(",") +

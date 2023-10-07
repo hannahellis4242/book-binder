@@ -17,7 +17,6 @@ pages.post("/", (req, res) => {
   if (report) {
     report.pages = num;
   }
-  console.log(report);
   res.redirect("/max");
 });
 

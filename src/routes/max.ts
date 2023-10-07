@@ -21,7 +21,6 @@ max.post("/", (req, res) => {
     }
     report.maxAllowed = num;
   }
-  console.log(report);
   res.redirect("/signatures");
 });
 

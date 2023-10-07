@@ -10,8 +10,6 @@ const sequenceMatches = ({ signatures }: SignatureList, sequence: number[]) => {
     .sort()
     .map((x) => x.toString())
     .join(",");
-  console.log("expected :", expectedArray);
-  console.log("result   :", result);
   return result === expectedArray;
 };
 

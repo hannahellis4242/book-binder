@@ -1,9 +1,10 @@
-export interface SignatureListEntry {
-  size: number;
-  count: number;
-}
+import { z } from "zod";
+import { SignatureListEntrySchema } from "./SignatureListEntry";
+import { PositiveIntSchema } from "../PositiveInt";
 
-export default interface SignatureList {
-  signatures: SignatureListEntry[];
-  pages?: number;
-}
+export const SignatureListSchema = z.object({
+  signatures: z.array(SignatureListEntrySchema),
+  pages: PositiveIntSchema.optional(),
+});
+type SignatureList = z.infer<typeof SignatureListSchema>;
+export default SignatureList;
