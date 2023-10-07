@@ -1,0 +1,21 @@
+version: "3"
+services:
+  redis:
+    image: redis
+    restart: always
+  page_sequence:
+    image: ghcr.io/hannahellis4242/bpss/book-page-sequence-service:latest
+    restart: always
+  sigature_finder:
+    image: ghcr.io/hannahellis4242/bsfs/book-signature-finder-service:latest
+    restart: always
+  signature_order:
+    image: ghcr.io/hannahellis4242/bsoo/book-signature-order-options:latest
+    restart: always
+  web:
+    image: ghcr.io/hannahellis4242/book-binder:latest
+    expose:
+      - 80
+    ports:
+      - 80:8080
+    restart: always
