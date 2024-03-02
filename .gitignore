@@ -1,3 +1,7 @@
 node_modules/
 dist/
 target/
+*.tfstate
+*.tfstate.*
+.terraform
+plan
